@@ -14,11 +14,19 @@ book_router = SQLAlchemyCRUDRouter(
 
 @book_router.get("")
 def get_books(
+    page: int,
+    size: int,
     id: Optional[int] = None,
     title: Annotated[str | None, Query(min_length=1)] = None,
     publication_date: Optional[date] = None,
     language: Annotated[str | None, Query(min_length=1)] = None,
-    authors: Annotated[str | None, Query(min_length=1)] = None,
-    genres: Annotated[str | None, Query(min_length=1)] = None
+    author: Annotated[str | None, Query(min_length=1)] = None,
+    genre: Annotated[str | None, Query(min_length=1)] = None
 ):
-    return filter_books(id, title, publication_date, language, authors, genres)
+    books = filter_books(page, size, id, title, publication_date, language, author, genre)
+
+    return {
+        "books": books,
+        "page": page,
+        "size": len(books),
+    }
