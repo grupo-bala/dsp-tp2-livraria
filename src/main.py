@@ -1,32 +1,14 @@
-from datetime import time
-import inspect
 from fastapi import FastAPI
-from fastapi_crudrouter import SQLAlchemyCRUDRouter
-from sqlmodel import Session, create_engine
-import src.models as models
+from .routes.book import book_router
+from .routes.edition import edition_router
+from .routes.person import people_router
+from .routes.sale import sale_router
+from .routes.sale_item import sale_item_router
 
-
-engine = create_engine("sqlite:///../database.db")
 app = FastAPI()
 
-def get_db():
-    db = Session(engine)
-    try:
-        yield db
-    finally:
-        db.close()
-
-model_classes = [
-    obj for name, obj in inspect.getmembers(models, inspect.isclass)
-    if obj.__module__ == models.__name__
-]
-
-for model in model_classes:
-    model_router = SQLAlchemyCRUDRouter(
-        schema=model,
-        create_schema=model,
-        db_model=model,
-        db=get_db
-    )
-
-    app.include_router(model_router)
+app.include_router(book_router)
+app.include_router(edition_router)
+app.include_router(sale_router)
+app.include_router(people_router)
+app.include_router(sale_item_router)
