@@ -1,5 +1,5 @@
 from ..models import SaleItem
-from ..db import get_db
+from ..database.infra import get_db
 from fastapi_crudrouter import SQLAlchemyCRUDRouter
 
 sale_item_router = SQLAlchemyCRUDRouter(

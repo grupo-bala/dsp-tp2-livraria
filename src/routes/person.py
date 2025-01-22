@@ -1,5 +1,5 @@
 from ..models import Person
-from ..db import get_db
+from ..database.infra import get_db
 from fastapi_crudrouter import SQLAlchemyCRUDRouter
 
 people_router = SQLAlchemyCRUDRouter(

@@ -1,8 +1,8 @@
-"""Init db
+"""Init database
 
-Revision ID: 546776d1916e
+Revision ID: 8eb15de44cea
 Revises: 
-Create Date: 2025-01-22 01:04:53.865586
+Create Date: 2025-01-22 20:50:58.463733
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '546776d1916e'
+revision: str = '8eb15de44cea'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -26,11 +26,20 @@ def upgrade() -> None:
     sa.Column('title', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('publication_date', sa.DateTime(), nullable=False),
     sa.Column('language', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('authors', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('genres', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('author', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('genre', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('customer',
+    op.create_table('employee',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('first_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('last_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('register_code', sa.Integer(), nullable=False),
+    sa.Column('hired_date', sa.DateTime(), nullable=False),
+    sa.Column('wage', sa.Float(), nullable=False),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('person',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('last_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
@@ -46,20 +55,30 @@ def upgrade() -> None:
     sa.Column('language', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('publication_year', sa.Integer(), nullable=False),
     sa.Column('stock', sa.Integer(), nullable=False),
+    sa.Column('book_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['book_id'], ['book.id'], ),
     sa.PrimaryKeyConstraint('isbn')
     )
     op.create_table('sale',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('date', sa.DateTime(), nullable=False),
     sa.Column('payment_type', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('customer_id', sa.Integer(), nullable=False),
+    sa.Column('employee_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['customer_id'], ['person.id'], ),
+    sa.ForeignKeyConstraint(['employee_id'], ['employee.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('saleitem',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('quantity', sa.Integer(), nullable=False),
     sa.Column('discount', sa.Float(), nullable=False),
-    sa.Column('notes', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('is_gift', sa.Boolean(), nullable=False),
+    sa.Column('notes', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('sale_id', sa.Integer(), nullable=False),
+    sa.Column('edition_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['edition_id'], ['edition.isbn'], ),
+    sa.ForeignKeyConstraint(['sale_id'], ['sale.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
@@ -70,6 +89,7 @@ def downgrade() -> None:
     op.drop_table('saleitem')
     op.drop_table('sale')
     op.drop_table('edition')
-    op.drop_table('customer')
+    op.drop_table('person')
+    op.drop_table('employee')
     op.drop_table('book')
     # ### end Alembic commands ###

@@ -19,6 +19,7 @@ class Edition(SQLModel, table=True):
     publication_year: int
     stock: int
 
+    book_id: int = Field(foreign_key="book.id")
     book: Book = Relationship()
 
 
@@ -31,19 +32,36 @@ class Person(SQLModel, table=True):
     address: str
 
 
-class SaleItem(SQLModel, table=True):
+class Employee(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
-    edition: Edition = Relationship()
-    quantity: int
-    discount: float
-    notes: Optional[str]
-    is_gift: bool
+    first_name: str
+    last_name: str
+    register_code: int
+    hired_date: datetime
+    wage: float
 
 
 class Sale(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     date: datetime
-    items: List[SaleItem] = Relationship()
-    customer: Person = Relationship()
     payment_type: str
-    employee: Person = Relationship()
+
+    items: List["SaleItem"] = Relationship()
+
+    customer_id: int = Field(foreign_key="person.id")
+    customer: Person = Relationship()
+    employee_id: int = Field(foreign_key="employee.id")
+    employee: Employee = Relationship()
+
+
+class SaleItem(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    quantity: int
+    discount: float
+    is_gift: bool
+    notes: Optional[str]
+
+    sale_id: int = Field(foreign_key="sale.id")
+    sale: Sale = Relationship(back_populates="items")
+    edition_id: int = Field(foreign_key="edition.isbn")
+    edition: Edition = Relationship()
