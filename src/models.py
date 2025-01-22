@@ -22,7 +22,7 @@ class Edition(SQLModel, table=True):
     book: Book = Relationship()
 
 
-class Customer(SQLModel, table=True):
+class Person(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     first_name: str
     last_name: str
@@ -44,6 +44,6 @@ class Sale(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     date: datetime
     items: List[SaleItem] = Relationship()
-    customer: Customer = Relationship()
+    customer: Person = Relationship()
     payment_type: str
-    employee: Customer = Relationship()
+    employee: Person = Relationship()
