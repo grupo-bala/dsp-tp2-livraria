@@ -7,8 +7,8 @@ class Book(SQLModel, table=True):
     title: str
     publication_date: datetime
     language: str
-    authors: str
-    genres: str
+    author: str
+    genre: str
     
 
 class Edition(SQLModel, table=True):
