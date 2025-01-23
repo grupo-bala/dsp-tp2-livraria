@@ -1,8 +1,8 @@
-"""Init database
+"""Init DB
 
-Revision ID: 7c4894002f53
+Revision ID: c86ca6ff40a8
 Revises:
-Create Date: 2025-01-22 21:26:38.348411
+Create Date: 2025-01-22 23:40:43.571535
 
 """
 
@@ -14,7 +14,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = "7c4894002f53"
+revision: str = "c86ca6ff40a8"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -92,7 +92,7 @@ def upgrade() -> None:
         sa.Column("is_gift", sa.Boolean(), nullable=False),
         sa.Column("notes", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
         sa.Column("sale_id", sa.Integer(), nullable=False),
-        sa.Column("edition_id", sa.Integer(), nullable=False),
+        sa.Column("edition_id", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.ForeignKeyConstraint(
             ["edition_id"],
             ["edition.isbn"],

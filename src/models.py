@@ -64,5 +64,5 @@ class SaleItem(SQLModel, table=True):
 
     sale_id: int = Field(foreign_key="sale.id")
     sale: Sale = Relationship(back_populates="items")
-    edition_id: int = Field(foreign_key="edition.isbn")
+    edition_id: str = Field(foreign_key="edition.isbn")
     edition: Edition = Relationship()
