@@ -14,6 +14,7 @@ def filter_editions(
     publication_year: Optional[int] = None,
     stock: Optional[int] = None,
     book_id: Optional[int] = None,
+    sort: Optional[bool] = None,
 ):
     with Session(engine) as session:
         statement = (
@@ -28,6 +29,12 @@ def filter_editions(
             .where(stock == None or Edition.stock == stock)
             .where(book_id == None or Edition.book_id == book_id)
         )
+
+        if sort != None:
+            if sort == "asc":
+                statement = statement.order_by(col(Edition.price).asc())
+            elif sort == "desc":
+                statement = statement.order_by(col(Edition.price).desc())
 
         statement = statement.offset((page - 1) * size).limit(size)
 

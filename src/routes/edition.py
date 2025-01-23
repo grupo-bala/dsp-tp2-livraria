@@ -21,9 +21,10 @@ def get_edtions(
     publication_year: Optional[int] = None,
     stock: Optional[int] = None,
     book_id: Optional[int] = None,
+    sort: Optional[str] = None,
 ):
     editions = filter_editions(
-        page, size, isbn, price, publisher, language, publication_year, stock, book_id
+        page, size, isbn, price, publisher, language, publication_year, stock, book_id, sort
     )
 
     return {"editions": editions, "page": page, "size": len(editions)}
