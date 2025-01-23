@@ -4,6 +4,7 @@ from sqlmodel import Session, select
 from typing import Optional
 from datetime import date
 
+
 def filter_books(
     page: int,
     size: int,
