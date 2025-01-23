@@ -1,8 +1,8 @@
 """Init database
 
-Revision ID: 8eb15de44cea
+Revision ID: 7c4894002f53
 Revises: 
-Create Date: 2025-01-22 20:50:58.463733
+Create Date: 2025-01-22 21:26:38.348411
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '8eb15de44cea'
+revision: str = '7c4894002f53'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -30,6 +30,15 @@ def upgrade() -> None:
     sa.Column('genre', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('customer',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('first_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('last_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('phone_number', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('email', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('address', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('employee',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
@@ -37,15 +46,6 @@ def upgrade() -> None:
     sa.Column('register_code', sa.Integer(), nullable=False),
     sa.Column('hired_date', sa.DateTime(), nullable=False),
     sa.Column('wage', sa.Float(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('person',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('first_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('last_name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('phone_number', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('email', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('address', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('edition',
@@ -65,7 +65,7 @@ def upgrade() -> None:
     sa.Column('payment_type', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('customer_id', sa.Integer(), nullable=False),
     sa.Column('employee_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['customer_id'], ['person.id'], ),
+    sa.ForeignKeyConstraint(['customer_id'], ['customer.id'], ),
     sa.ForeignKeyConstraint(['employee_id'], ['employee.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -89,7 +89,7 @@ def downgrade() -> None:
     op.drop_table('saleitem')
     op.drop_table('sale')
     op.drop_table('edition')
-    op.drop_table('person')
     op.drop_table('employee')
+    op.drop_table('customer')
     op.drop_table('book')
     # ### end Alembic commands ###

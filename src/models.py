@@ -23,7 +23,7 @@ class Edition(SQLModel, table=True):
     book: Book = Relationship()
 
 
-class Person(SQLModel, table=True):
+class Customer(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     first_name: str
     last_name: str
@@ -48,8 +48,8 @@ class Sale(SQLModel, table=True):
 
     items: List["SaleItem"] = Relationship()
 
-    customer_id: int = Field(foreign_key="person.id")
-    customer: Person = Relationship()
+    customer_id: int = Field(foreign_key="customer.id")
+    customer: Customer = Relationship()
     employee_id: int = Field(foreign_key="employee.id")
     employee: Employee = Relationship()
 

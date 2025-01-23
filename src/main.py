@@ -3,9 +3,10 @@ from fastapi import FastAPI, Request
 from loguru import logger
 from .routes.book import book_router
 from .routes.edition import edition_router
-from .routes.person import people_router
+from .routes.customer import people_router
 from .routes.sale import sale_router
 from .routes.sale_item import sale_item_router
+from .routes.employee import employees_router
 
 
 LOGGER_FORMAT = (
@@ -37,8 +38,10 @@ async def log_requests(request: Request, call_next):
     
     return response
 
+
 app.include_router(book_router)
 app.include_router(edition_router)
 app.include_router(sale_router)
 app.include_router(people_router)
 app.include_router(sale_item_router)
+app.include_router(employees_router)
