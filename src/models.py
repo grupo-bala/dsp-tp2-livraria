@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import List, Optional
 from sqlmodel import Relationship, SQLModel, Field
 
+
 class Book(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     title: str
@@ -9,7 +10,7 @@ class Book(SQLModel, table=True):
     language: str
     author: str
     genre: str
-    
+
 
 class Edition(SQLModel, table=True):
     isbn: str = Field(default=None, primary_key=True)

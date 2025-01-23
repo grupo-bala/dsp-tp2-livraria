@@ -22,11 +22,12 @@ logger.add("actions.log")
 
 app = FastAPI()
 
+
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     inner_log = logger
     inner_log.info(f"Receiving request: {request.method} {request.url}")
-   
+
     response = None
 
     try:
@@ -35,7 +36,7 @@ async def log_requests(request: Request, call_next):
     except Exception as error:
         inner_log.error(f"Response: 500")
         raise error
-    
+
     return response
 
 

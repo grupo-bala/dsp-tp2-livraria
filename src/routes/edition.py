@@ -1,16 +1,14 @@
 from ..models import Edition
 from ..database.infra import get_db
-from ..database.edition import filter_editions
+from ..database.edition import filter_editions, count
 from fastapi_crudrouter import SQLAlchemyCRUDRouter
 from typing import Annotated, Optional
 from fastapi import Query
 
 edition_router = SQLAlchemyCRUDRouter(
-    schema=Edition,
-    db_model=Edition,
-    create_schema=Edition,
-    db=get_db
+    schema=Edition, db_model=Edition, create_schema=Edition, db=get_db
 )
+
 
 @edition_router.get("")
 def get_edtions(
@@ -24,10 +22,15 @@ def get_edtions(
     stock: Optional[int] = None,
     book_id: Optional[int] = None,
 ):
-    editions = filter_editions(page, size, isbn, price, publisher, language, publication_year, stock, book_id)
+    editions = filter_editions(
+        page, size, isbn, price, publisher, language, publication_year, stock, book_id
+    )
 
-    return {
-        "editions": editions,
-        "page": page,
-        "size": len(editions)
-    }
+    return {"editions": editions, "page": page, "size": len(editions)}
+
+
+@edition_router.get("/count/")
+def count_books():
+    cnt = count()
+
+    return {"count": cnt}
