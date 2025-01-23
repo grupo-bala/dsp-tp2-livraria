@@ -1,6 +1,6 @@
 from ..models import Employee
 from ..database.infra import get_db
-from ..database.employee import filter_employees, count
+from ..database.employee import filter_employees, count, sales_in_time_window
 from fastapi_crudrouter import SQLAlchemyCRUDRouter
 from typing import Annotated, Optional
 from fastapi import Query
@@ -36,3 +36,13 @@ def count_books():
     cnt = count()
 
     return {"count": cnt}
+
+
+@employees_router.get("/time-window-sales/")
+def sales_in_time_window_route(employee_id: int, start_date: date, end_date: date):
+    result = sales_in_time_window(employee_id, start_date, end_date)
+
+    return {
+        "count": result["count"],
+        "value": result["value"],
+    }
