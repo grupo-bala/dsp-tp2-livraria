@@ -18,7 +18,7 @@ def get_sale_items(
     is_gift: Optional[bool] = None,
     notes: Annotated[str | None, Query(min_length=1)] = None,
     sale_id: Optional[int] = None,
-    edition_id: Optional[int] = None,
+    edition_id: Optional[str] = None,
 ):
     sale_items = filter_sale_items(
         page, size, id, quantity, discount, is_gift, notes, sale_id, edition_id

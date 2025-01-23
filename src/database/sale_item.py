@@ -13,7 +13,7 @@ def filter_sale_items(
     is_gift: Optional[bool] = None,
     notes: Optional[str] = None,
     sale_id: Optional[int] = None,
-    edition_id: Optional[int] = None,
+    edition_id: Optional[str] = None,
 ):
     with Session(engine) as session:
         statement = (
